@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Задачі для користувача</title>
-    {% for t in tasks %}
-    <p>{{t.title}} <br/>{{t.description}}
 
-    </p>
-{% endfor %}
 </head>
 <body>
-
+    <h1>Список задач</h1>
+    {% for t in tasks %}
+        <a href="{%url 'task' t.id %}">{{t.title}}</a> <br/>{{t.description}} <hr>
+    {% endfor %}
 </body>
 </html>

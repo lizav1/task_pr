@@ -1,13 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Task
+from django.views.generic.detail import DetailView
+
+def homeView(request):
+    model = Task
+    tasks = Task.objects.all()
+    context = {'tasks': tasks}
+    return render(request, 'taskapp/home.html', context=context)
 
 
-def projectView(request):
-    return HttpResponse("OK!")
-
-
-# 
-def taskView():
-    pass
-
-
+class taskView(DetailView):
+    model = Task
+    template_name = 'taskapp/task.html'
