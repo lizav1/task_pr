@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Task
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
 
@@ -39,6 +40,7 @@ def logout_event(request):
 # view for task
 
 
+@login_required(login_url="login")
 def home_view(request):
     """
     show all tasks for current user
@@ -49,6 +51,7 @@ def home_view(request):
     return render(request, 'taskapp/home.html', context=context)
 
 
+@login_required(login_url="login")
 def create_task_view(request):
     """
     create task from form
@@ -63,6 +66,7 @@ def create_task_view(request):
     return render(request, 'taskapp/create_task.html', context=context)
 
 
+@login_required(login_url="login")
 def edit_task_view(request, id):
     """
     update current task
@@ -78,6 +82,7 @@ def edit_task_view(request, id):
     return render(request,'taskapp/edit_task.html')
 
 
+@login_required(login_url="login")
 def delete_task(request, id):
     """
     delete task
@@ -87,6 +92,7 @@ def delete_task(request, id):
     return redirect('home')
 
 
+@login_required(login_url="login")
 def view_task(request, id):
     """
     view task
