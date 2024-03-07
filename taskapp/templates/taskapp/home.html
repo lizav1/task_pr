@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Задачі для користувача</title>
-
 </head>
 <body>
+{% include "header.html" %}
 {% block content %}
-    <a href="{%url 'create_task' %}">Cтворити задачу</a><hr>
+    <a href="{%url 'create_task' %}">Cтворити задачу</a>
     <h1>Список задач</h1>
         {% for task in tasks %}
             <a href="{%url 'task' task.id%}">{{task.title}}</a>
