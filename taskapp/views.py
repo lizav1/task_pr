@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Task
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
@@ -28,8 +28,19 @@ def login_view(request):
 
 
 def signup_view(request):
-
-    context = {"form": {}}
+    """
+    register new user
+    """
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request,user)
+            return redirect("home")
+        else:
+            #print error
+             return render(request, 'taskapp/signup.html', context={'form': form})
+    context = {"form": UserCreationForm}
     return render(request, 'taskapp/signup.html', context=context)
 
 
