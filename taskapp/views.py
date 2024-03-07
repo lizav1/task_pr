@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Task
+from .models import Task, TaskStatus
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
@@ -7,19 +7,17 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
 
 
-#login/registration view
 
+#login/registration views
 
 def login_view(request):
     form = AuthenticationForm(request=request, data=request.POST)
     if form.is_valid():
-        print('login0')
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            print('login')
             return redirect('home')
         else:
             return {} #add message
@@ -39,7 +37,7 @@ def signup_view(request):
             return redirect("home")
         else:
             #print error
-             return render(request, 'taskapp/signup.html', context={'form': form})
+             return {}
     context = {"form": UserCreationForm}
     return render(request, 'taskapp/signup.html', context=context)
 
@@ -48,17 +46,21 @@ def logout_event(request):
     logout(request)
     return redirect('home')
 
-# view for task
+
+# view for tasks
 
 
 @login_required(login_url="login")
 def home_view(request):
     """
-    show all tasks for current user
-
+    show all tasks for current user with filters by status
     """
+    # add id for view
+    # status filter my / my to do filter
+
+    status = TaskStatus.objects.all()
     tasks = Task.objects.all()
-    context = {'tasks': tasks}
+    context = {'tasks': tasks, 'status': status}
     return render(request, 'taskapp/home.html', context=context)
 
 
@@ -80,17 +82,18 @@ def create_task_view(request):
 @login_required(login_url="login")
 def edit_task_view(request, id):
     """
-    update current task
+    update current task information
     """
     task = Task.objects.get(id=id)
+    form = TaskForm(instance=task)
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
         if form.is_valid():
+            form.instance.edited = True
             form.save()
-            redirect('home')
-    form = TaskForm()
+            return redirect('home')
     context = {'form': form}
-    return render(request,'taskapp/edit_task.html')
+    return render(request,'taskapp/edit_task.html', context=context)
 
 
 @login_required(login_url="login")
@@ -112,3 +115,9 @@ def view_task(request, id):
     context = {'task': task}
     return render(request, 'taskapp/task.html', context=context)
 
+
+@login_required(login_url="login")
+def profile_view(request, id):
+    user = User.objects.get(id=id)
+    context = {"user": user}
+    return render(request,'taskapp/profile.html',context=context)

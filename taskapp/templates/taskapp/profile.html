@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Профіль</title>
+</head>
+<body>
+ {% include 'header.html' %}
+  <a href="/">Назад</a>
+
+        {% block content %}
+        {{ user.username }}
+        {% endblock %}
+
+</body>
+</html>
