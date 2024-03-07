@@ -6,9 +6,15 @@
 
 </head>
 <body>
+{% block content %}
+    <a href="{%url 'create_task' %}">Cтворити задачу</a><hr>
     <h1>Список задач</h1>
-    {% for t in tasks %}
-        <a href="{%url 'task' t.id %}">{{t.title}}</a> <br/>{{t.description}} <hr>
+        {% for task in tasks %}
+            <a href="{%url 'task' task.id%}">{{task.title}}</a>
+            <a>Редагувати</a>
+            <a href="{%url 'delete_task' task.id %}">Видалити</a>
+            <p>{{task.description}}</p> <hr>
     {% endfor %}
+{% endblock %}
 </body>
 </html>

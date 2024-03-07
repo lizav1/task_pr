@@ -5,11 +5,15 @@
         <title>Задача</title>
 </head>
 <body>
-        <h1> {{ object.title }}</h1>
-        <p>Опис:{{ object.description }}</p>
-        <p>Створено: {{ object.created|date }} by {{ object.creator }}</p>
-        <p>Виконує: {{ object.assignee }}</p>
-        <p> Статус виконання: {{ object.status.name }} </p>
+        <a href="">Назад</a>
+
+        {% block content %}
+                <h1>{{task.title}} </h1>
+                <p>{{task.description}} </p>
+                <p> дата створення {{task.created}} </p>
+                <p> створив  {{task.creator}}</p>
+                <p> виконує  {{task.assignee}}</p>
+        {% endblock content %}
 
 </body>
 </html>
