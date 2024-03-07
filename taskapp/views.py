@@ -1,6 +1,31 @@
 from django.shortcuts import render, redirect
 from .models import Task
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 from .forms import TaskForm
+
+
+#login/registration view
+
+
+def login_view(request):
+    form = AuthenticationForm()
+    # if request.method == "POST":
+        #login logic
+    context = {"form": form}
+    return render(request, 'taskapp/login.html', context=context)
+
+
+def signup_view(request):
+
+    context = {"form": {}}
+    return render(request, 'taskapp/signup.html', context=context)
+
+def logout(request):
+    #logout logic
+    return redirect('home')
+
+# view for task
 
 
 def home_view(request):
