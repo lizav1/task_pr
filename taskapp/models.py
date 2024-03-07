@@ -11,6 +11,7 @@ class TaskTag(models.Model):
 
 class TaskStatus(models.Model):
     name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, blank=True)
 
 
 class Task(models.Model):
@@ -21,4 +22,3 @@ class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     assignee = models.ForeignKey(User,related_name="assignee", on_delete=models.SET_NULL, null=True)
-
