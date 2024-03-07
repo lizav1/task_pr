@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Task
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
 
 
@@ -9,9 +10,18 @@ from .forms import TaskForm
 
 
 def login_view(request):
-    form = AuthenticationForm()
-    # if request.method == "POST":
-        #login logic
+    form = AuthenticationForm(request=request, data=request.POST)
+    if form.is_valid():
+        print('login0')
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            print('login')
+            return redirect('home')
+        else:
+            return {} #add message
     context = {"form": form}
     return render(request, 'taskapp/login.html', context=context)
 
@@ -21,8 +31,9 @@ def signup_view(request):
     context = {"form": {}}
     return render(request, 'taskapp/signup.html', context=context)
 
-def logout(request):
-    #logout logic
+
+def logout_event(request):
+    logout(request)
     return redirect('home')
 
 # view for task
