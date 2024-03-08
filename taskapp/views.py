@@ -9,8 +9,6 @@ from django.contrib import messages
 from django.db.models import Q
 
 
-
-
 # view for tasks
 
 @login_required(login_url="login")
@@ -89,7 +87,11 @@ def view_task(request, id):
 
 
 @login_required(login_url="login")
+
 def profile_view(request, id):
+    """
+    view for show data about user and task statuses
+    """
     user = User.objects.get(id=id)
     status = TaskStatus.objects.all()
     n_task = (Task.objects.filter(creator_id=id).count())
@@ -99,6 +101,9 @@ def profile_view(request, id):
 
 #login/registration views
 def login_view(request):
+    """
+    form for login user
+    """
     form = AuthenticationForm(request=request, data=request.POST)
     if form.is_valid():
         username = form.cleaned_data.get('username')
@@ -130,6 +135,9 @@ def signup_view(request):
 
 
 def logout_event(request):
+    """
+    logout function from account
+    """
     logout(request)
     return redirect('home')
 
