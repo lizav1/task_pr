@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <title>Задачі для користувача</title>
@@ -7,14 +7,27 @@
 <body>
 {% include "header.html" %}
 {% block content %}
-    <a href="{%url 'create_task' %}">Cтворити задачу</a>
     <h1>Список задач</h1>
+        <a href="{%url 'create_task' %}">Cтворити задачу</a>
+    <div>
+        {% for s in status %}
+        <a href="{% url 'home' %}?q={{s.name}}">{{ s.name }}</a>
+        {% endfor %}
+    </div>
+<div>
+        <hr>
         {% for task in tasks %}
-            <a href="{%url 'task' task.id%}">{{task.title}}</a>
-            <a>Редагувати</a>
-            <a href="{%url 'delete_task' task.id %}">Видалити</a>
-            <p>{{task.description}}</p> <hr>
+            <h2><a href="{%url 'task' task.id%}">{{task.title}}</a></br></h2>
+            <a href="{%url 'edit_task' task.id %}"> Редагувати</a>
+            <a href="{%url 'delete_task' task.id %}"> Видалити</a>
+            <p>{{task.description}}</p>
+            {% if task.edited%}  змінено в {{task.updated|date:'H:i d.m.Y '}}{% endif %}
+            <p> створено {{task.created|date:'H:i d.m.Y'}} </p>
+            <p> створив {{task.creator}}</p>
+            <p> виконує  {{task.assignee}}</p>
+            <hr>
     {% endfor %}
+</div>
 {% endblock %}
 </body>
 </html>
