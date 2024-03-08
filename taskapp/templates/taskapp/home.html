@@ -11,21 +11,32 @@
         <a class="btn btn-success btn" href="{%url 'create_task' %}"> + new task</a>
     <div>
         <hr>
+<!--filter parameters -->
+         <a  href="/">All tasks</a>
         {% for s in status %}
             <a  href="{% url 'home' %}?q={{s.name}}">{{ s.name }}</a>
         {% endfor %}
 
     </div>
-        <hr>
+     <hr>
+<!--filter status-->
+    {% if filter_status %}
+        <p class="text-muted"> filter: {{filter_status}} </p>
+    {% else %}
+        <p class="text-muted"> All my tasks: </p>
+    {% endif %}
+
         <div class="card-group">
+<!-- tasks output-->
         {% for task in tasks %}
             <div class="card" style="width: 18rem;">
                 <div class="card-header"><a href="{%url 'task' task.id%}">{{task.title}}</a></div>
                     <div class="card-body">
-                        <p class="text-info"> assignee: {{task.assignee}} </p>
+                        <p class="text-info"> assignee: {{task.assignee}}  </p>
                         <p class="card-text">{{task.description}}</p>
                         <p class="font-italic text-muted">{% if task.edited%}  edited {{task.updated|date:'H:i d.m.Y '}}{% endif %} </p>
                         <p class="font-italic text-muted"> created {{task.created|date:'H:i d.m.Y '}} </p>
+                        <p class="text-warning"> status: {{task.status}} </p>
                         <a href="{%url 'edit_task' task.id %}" class="card-link">Edit</a>
                         <a href="{%url 'delete_task' task.id %}" class="card-link">Delete</a>
                     </div>

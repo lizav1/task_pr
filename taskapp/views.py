@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import TaskForm
+from django.contrib import messages
 from django.db.models import Q
 
 
@@ -17,15 +18,20 @@ def home_view(request):
     """
     show all tasks for current user with filters by status
     """
-
+    status = TaskStatus.objects.all()
     if request.GET.get('q') is not None:
         q = request.GET.get('q')
-        status_id = TaskStatus.objects.get(name=q).id
-        # tasks = Task.objects.filter(Q(creator_id=request.user.id) | Q(assignee_id=request.user.id))
-
-    tasks = Task.objects.filter(Q(creator_id=request.user.id) | Q(assignee_id=request.user.id))
-    status = TaskStatus.objects.all()
-    context = {'tasks': tasks, 'status': status}
+        try:
+            status_id = TaskStatus.objects.get(name=q).id
+        except TaskStatus.DoesNotExist:
+            return redirect('home')
+        tasks = Task.objects.filter(status=status_id).filter(Q(creator_id=request.user.id) | Q(assignee_id=request.user.id))
+        context = {'tasks': tasks, 'status': status, 'filter_status':q}
+        return render(request, 'taskapp/home.html', context=context)
+    else:
+        tasks = Task.objects.filter(Q(creator_id=request.user.id) | Q(assignee_id=request.user.id) )
+        status = TaskStatus.objects.all()
+        context = {'tasks': tasks, 'status': status}
     return render(request, 'taskapp/home.html', context=context)
 
 
@@ -85,7 +91,9 @@ def view_task(request, id):
 @login_required(login_url="login")
 def profile_view(request, id):
     user = User.objects.get(id=id)
-    context = {"user": user}
+    status = TaskStatus.objects.all()
+    n_task = (Task.objects.filter(creator_id=id).count())
+    context = {"user": user, 'status': status, "n_task": n_task}
     return render(request,'taskapp/profile.html',context=context)
 
 
@@ -100,7 +108,7 @@ def login_view(request):
             login(request, user)
             return redirect('home')
         else:
-            return {} #add message
+            messages.error(request, 'Username/password does not exist')
     context = {"form": form}
     return render(request, 'taskapp/login.html', context=context)
 
@@ -115,9 +123,8 @@ def signup_view(request):
             user = form.save()
             login(request,user)
             return redirect("home")
-        else:
-            #print error
-             return {}
+        # else:
+        #     #todo:print error
     context = {"form": UserCreationForm}
     return render(request, 'taskapp/signup.html', context=context)
 
