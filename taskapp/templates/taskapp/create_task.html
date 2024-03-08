@@ -6,17 +6,23 @@
     <title>Створити задачу</title>
 </head>
 <body>
-<a href="">Назад</a>
+<a href="">Back</a>
 {% block content %}
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="Створити"/>
-    </form>
-</div>
+<div class="container">
+    <div class="card mt-3">
+        <h3 class="card-header">Create task</h3>
 
-{% endblock content %}
+        <div class="card-body">
+            <form class="form" role="form" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Зберегти</button>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 </body>
 </html>

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+{% extends 'main.html' %}
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <title>Профіль</title>
 </head>
 <body>
- {% include 'header.html' %}
-  <a href="/">Назад</a>
-
+  <a href="/">Back</a>
+        <h3>Profile</h3>
         {% block content %}
-        {{ user.username }}
+        nickname: @{{ user.username }}
+        task created: n
         {% endblock %}
 
 </body>

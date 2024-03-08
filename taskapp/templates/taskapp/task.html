@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+{% extends 'main.html' %}
+<html lang="uk">
 <head>
         <meta charset="UTF-8">
         <title>Задача</title>
 </head>
 <body>
-        <a href="/">Назад</a>
 
         {% block content %}
-                <h1>{{task.title}} </h1>
-                <p>{{task.description}} </p>
-                <p> дата створення {{task.created}} </p>
-                <p> створив  {{task.creator}}</p>
-                <p> виконує  {{task.assignee}}</p>
-        {% endblock content %}
+        <a href="/">Back</a>
+        <div class="card" style="width: 18rem;">
+                <div class="card-header "><a href="{%url 'task' task.id%}">{{task.title}}</a></div>
+                    <div class="card-body">
+                        <p class="text-info"> assignee: {{task.assignee}} </p>
+                        <p class="card-text">{{task.description}}</p>
+                        <p class="font-italic text-muted">{% if task.edited%}  edited {{task.updated|date:'H:i d.m.Y '}}{% endif %} </p>
+                        <p class="font-italic text-muted"> created {{task.created|date:'H:i d.m.Y '}} </p>
 
+                    </div>
+            </div>
+        {% endblock %}
 </body>
 </html>
