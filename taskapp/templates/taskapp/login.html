@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+{% extends 'main.html' %}
+{% load static %}
+
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <title>Вхід</title>
 </head>
-<body>
-    {% include 'header.html' %}
-    {% block content %}
-        <div>
-        <form method="POST" action="">
-            {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="Вхід" />
-            <a href="signup"> Реєстрація </a>
-        </form>
+{% block content %}
+<div class="container">
+
+    <div class="card mt-3">
+        <h3 class="card-header text-center">Login</h3>
+        <div class="card-body">
+            <form class="form" role="form" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+        </div>
     </div>
-
-    {% endblock content %}
-
-
-</body>
+</div>
+{% endblock %}
 </html>

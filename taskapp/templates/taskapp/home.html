@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% extends 'main.html' %}
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -15,19 +16,35 @@
         {% endfor %}
     </div>
 <div>
-        <hr>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
         {% for task in tasks %}
-            <h2><a href="{%url 'task' task.id%}">{{task.title}}</a></br></h2>
-            <a href="{%url 'edit_task' task.id %}"> Редагувати</a>
-            <a href="{%url 'delete_task' task.id %}"> Видалити</a>
-            <p>{{task.description}}</p>
-            {% if task.edited%}  змінено в {{task.updated|date:'H:i d.m.Y '}}{% endif %}
-            <p> створено {{task.created|date:'H:i d.m.Y'}} </p>
-            <p> створив {{task.creator}}</p>
-            <p> виконує  {{task.assignee}}</p>
-            <hr>
-    {% endfor %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-header"><a href="{%url 'task' task.id%}">{{task.title}}</a></div>
+                    <div class="card-body">
+                        <p class="text-info"> assignee: {{task.assignee}} </p>
+                        <p class="card-text">{{task.description}}</p>
+                        <p class="font-italic text-muted">{% if task.edited%}  edited {{task.updated|date:'H:i d.m.Y '}}{% endif %} </p>
+                        <p class="font-italic text-muted"> created {{task.created|date:'H:i d.m.Y '}} </p>
+                        <a href="{%url 'edit_task' task.id %}" class="card-link">Edit</a>
+                        <a href="{%url 'delete_task' task.id %}" class="card-link">Delete</a>
+                    </div>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+
 </div>
 {% endblock %}
 </body>
 </html>
+
+<!--            <h2><a href="{%url 'task' task.id%}">{{task.title}}</a></br></h2>-->
+<!--            <a href="{%url 'edit_task' task.id %}"> Редагувати</a>-->
+<!--            <a href="{%url 'delete_task' task.id %}"> Видалити</a>-->
+<!--            <p>{{task.description}}</p>-->
+<!--            {% if task.edited%}  змінено в {{task.updated|date:'H:i d.m.Y '}}{% endif %}-->
+<!--            <p> створено {{task.created|date:'H:i d.m.Y'}} </p>-->
+<!--            <p> створив {{task.creator}}</p>-->
+<!--            <p> виконує  {{task.assignee}}</p>-->
+<!--            <hr>-->

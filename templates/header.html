@@ -1,10 +1,18 @@
-<h1><a href="/">TaskApp</a></h1>
+
 {%block content%}
+    <!--Navbar-->
+    <nav class="navbar navbar-light bg-light" >
+      <a class="navbar-brand" href="/">TaskApp</a>
     {% if user.is_authenticated %}
-        <p>вітаю, {{user.username}} </p>
-        <a href="{% url 'logout' %}">logout</a>
+        <div class="d-flex flex-row">
+            <div class="p-2">Hello, <a href="{% url 'profile' user.id %}"> {{user.username}} </a>!</div>
+            <div class="p-2"  ><a class="btn btn-outline-primary" href="{% url 'logout' %}" > Logout</a></div>
+        </div>
     {% else %}
-        <p>ви не в системі</p> <a href="{% url 'login' %}">увійти</a>
+        <div class="d-flex align-items-center">
+             <div class="p-2"  ><a class="btn btn-outline-primary" href="{% url 'login' %}" > Login</a></div>
+             <div class="p-2"  ><a class="btn btn-outline-success" href="{% url 'signup' %}" > Sign Up</a></div>
+        </div>
     {% endif %}
+    </nav>
     {% endblock %}
-<hr/>
