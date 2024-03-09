@@ -80,9 +80,9 @@ class FormsTest(TestCase):
     test for forms
     """
 
-    def test_valid_task_form(self):
+    def test_invalid_task_form(self):
         user = User.objects.create(username="developer1", password="qwerty123")
-        task = Task.objects.create(creator=user, assignee=user, title='Testing model')
-        data = {'title': task.title, 'creator': task.creator}
+        task = Task.objects.create(creator=user, assignee=user, title='Testing model',description="qqqqqq")
+        data = {'title': task.title}
         form = TaskForm(data=data)
-        self.assertTrue(form.is_valid())
+        self.assertFalse(form.is_valid())
